@@ -1,4 +1,4 @@
-//Dupla: Vitório Gomes, Maria Vitória da Silva Medeiross
+//Dupla: Vitório Gomes, Maria Vitória da Silva Medeiros
 
 // ============================================================
 // S2_library-bad.js — Mãos à Obra da Semana 2 (Parte A)
