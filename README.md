@@ -1,12 +1,12 @@
 # Projeto 1 — Programação Web (UEPB · 2026.2)
 
-**Aluno(a):** Seu Nome Completo
+**Aluno(a):** Vitório Gomes de Freitas
 **Disciplina:** Programação Web · Prof. Rodrigo Alves Costa
 
 ## Sobre
 
 Aplicação fullstack (API Express em camadas + SQLite + frontend Bootstrap com Vanilla JS).
-O domínio do projeto será definido na Semana 2.
+Simulador de Home Broker — Sistema de Negociação de Ativos Financeiros. A modelagem está em [MODELAGEM.md](MODELAGEM.md).
 
 ## Estrutura
 
