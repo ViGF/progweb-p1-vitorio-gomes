@@ -1,0 +1,107 @@
+#Utiliza a extensão REST Client do VSCode para testar a API
+@apiUrl = http://localhost:3000
+
+GET {{apiUrl}}
+
+### Criar investidor:
+
+POST {{apiUrl}}/investidores
+content-type: application/json
+
+{"nome":"Ana Silva","cpf":"123.456.789-00","email":"ana@email.com", "celular": "+55 11 91234-5678"}
+
+### Listar investidores:
+
+GET {{apiUrl}}/investidores
+
+### Buscar um investidor:
+
+GET {{apiUrl}}/investidores/1
+
+### Buscar investidor inexistente:
+
+GET {{apiUrl}}/investidores/99
+
+### Criar investidor sem sem nome, CPF
+
+POST {{apiUrl}}/investidores/
+content-type: application/json
+
+{"email":"ana.nova@email.com"}
+
+### Criar investidor sem email
+
+POST {{apiUrl}}/investidores/
+content-type: application/json
+
+{"nome":"Ana Nova","cpf":"123.456.789-00"}
+
+### Criar investidor com CPF já existente:
+
+POST {{apiUrl}}/investidores
+content-type: application/json
+
+{"nome":"Ana Dup","cpf":"123.456.789-00", "email":"ana.dup@email.com", "celular": "+55 11 91234-5678"}
+
+### Atualizar investidor:
+
+PUT {{apiUrl}}/investidores/1
+content-type: application/json
+
+{"nome":"Aninha Silva"}
+
+### Apagar investidor:
+
+DELETE {{apiUrl}}/investidores/1
+
+### Buscar investidor apagado:
+
+GET {{apiUrl}}/investidores/1
+
+###-----------------------------
+
+
+
+### Investidor não existe:
+
+POST {{apiUrl}}/contas
+content-type: application/json
+
+{"saldo": 1000, "investidorId": 5}
+
+// TESTES.MD:
+
+### Criar investidor:
+
+POST {{apiUrl}}/investidores
+content-type: application/json
+
+{"nome":"Bruno Costa","cpf":"987.654.321-00", "email": "bruno@email.com", "celular": "+55 11 98765-4321"}
+
+### Criar conta para investidor existente:
+POST {{apiUrl}}/contas
+content-type: application/json
+
+{"saldo": 1000, "investidorId": 1}
+
+### Buscar conta inexistente:
+
+GET {{apiUrl}}/contas/99
+
+### Criar conta com investidor inexistente:
+
+POST {{apiUrl}}/contas
+content-type: application/json
+
+{"saldo": 1000, "investidorId": 99}
+
+### Criar com com saldo negativo:
+
+POST {{apiUrl}}/contas
+content-type: application/json
+
+{"saldo": -1, "investidorId": 1}
+
+### Obter investidor com conta:
+
+GET {{apiUrl}}/investidores/1
