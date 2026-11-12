@@ -1,0 +1,59 @@
+#Utiliza a extensão REST Client do VSCode para testar a API
+@apiUrl = http://localhost:3000
+
+GET {{apiUrl}}
+
+###
+
+POST {{apiUrl}}/clientes
+content-type: application/json
+
+{"nome":"Ana Silva","cpf":"123.456.789-00","email":"ana@email.com"}
+
+###
+
+POST {{apiUrl}}/clientes
+content-type: application/json
+
+{"nome":"Bruno Costa","cpf":"987.654.321-00"}
+
+###
+
+GET {{apiUrl}}/clientes
+
+###
+
+GET {{apiUrl}}/clientes/1
+
+###
+
+GET {{apiUrl}}/clientes/99
+
+###
+
+PUT {{apiUrl}}/clientes/1
+content-type: application/json
+
+{"email":"ana.nova@email.com"}
+
+###
+
+POST {{apiUrl}}/clientes
+content-type: application/json
+
+{"nome":"Ana Dup","cpf":"123.456.789-00"}
+
+###
+
+POST {{apiUrl}}/clientes
+content-type: application/json
+
+{"cpf":"111"}
+
+###
+
+DELETE {{apiUrl}}/clientes/2
+
+###
+
+GET {{apiUrl}}/clientes/2

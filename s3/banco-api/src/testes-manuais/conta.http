@@ -1,0 +1,15 @@
+#Utiliza a extensão REST Client do VSCode para testar a API
+@apiUrl = http://localhost:3000
+
+GET {{apiUrl}}
+
+###
+
+POST {{apiUrl}}/contas
+content-type: application/json
+
+{"tipo":"corrente","saldo":1500,"clienteId":1}
+
+###
+
+GET {{apiUrl}}/contas?clienteId=1
