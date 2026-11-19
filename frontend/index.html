@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Simulador de Home Broker · Painel</title>
+  <!-- Bootstrap 5.3.8 via CDN, com SRI: o navegador confere o hash do arquivo -->
+  <link rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+    integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+    crossorigin="anonymous">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-body-tertiary">
+  <header class="bg-primary text-white py-3 mb-4">
+    <div class="container">
+      <h1 class="h3 mb-0">Simulador de Home Broker · Painel</h1>
+      <p class="mb-0 small">SPA em Vanilla JS consumindo a API da Semana 3</p>
+    </div>
+  </header>
+
+  <main class="container">
+    <!-- Resultado das ações (criar, editar, remover) -->
+    <div id="aviso" class="alert d-none" role="status" aria-live="polite"></div>
+
+    <!-- ===================== INVESTIDORES ===================== -->
+    <section class="row g-4 mb-5" aria-labelledby="titulo-investidores">
+      <!-- Grid de 12 colunas: 4 para o formulário, 8 para a lista -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h2 id="titulo-investidores" class="h5 mb-0">Investidores</h2>
+          </div>
+          <form id="form-investidor" class="card-body" novalidate>
+            <div class="mb-3">
+              <label for="inv-nome" class="form-label">Nome</label>
+              <input id="inv-nome" name="nome" type="text" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="inv-cpf" class="form-label">CPF</label>
+              <input id="inv-cpf" name="cpf" type="text" class="form-control"
+                inputmode="numeric" placeholder="000.000.000-00" required>
+            </div>
+            <div class="mb-3">
+              <label for="inv-email" class="form-label">E-mail</label>
+              <input id="inv-email" name="email" type="email" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label for="inv-celular" class="form-label">Celular</label>
+              <input id="inv-celular" name="celular" type="text" class="form-control" required>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="inv-salvar" type="submit" class="btn btn-primary">Cadastrar investidor</button>
+              <button id="inv-cancelar" type="button" class="btn btn-outline-secondary d-none">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <!-- Os quatro estados da lista: só um aparece por vez -->
+            <div id="investidores-carregando" class="text-center py-4">
+              <div class="spinner-border text-primary" aria-hidden="true"></div>
+              <p class="text-muted mt-2 mb-0">Carregando investidores…</p>
+            </div>
+
+            <div id="investidores-erro" class="alert alert-danger mb-0 d-none" role="alert">
+              <p id="investidores-erro-msg" class="mb-2"></p>
+              <button id="investidores-recarregar" type="button" class="btn btn-sm btn-outline-danger">Tentar de novo</button>
+            </div>
+
+            <p id="investidores-vazio" class="text-muted text-center py-4 mb-0 d-none">
+              Nenhum investidor ainda. Cadastre o primeiro no formulário.
+            </p>
+
+            <div id="investidores-sucesso" class="table-responsive d-none">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Nome</th>
+                  <th scope="col">CPF</th>
+                  <th scope="col">E-mail</th>
+                  <th scope="col">Celular</th>
+                  <th scope="col" class="text-end">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="investidores-linhas"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================== CONTAS ===================== -->
+    <section class="row g-4 mb-5" aria-labelledby="titulo-contas">
+      <!-- Grid de 12 colunas: 4 para o formulário, 8 para a lista -->
+      <div class="col-lg-4">
+        <div class="card shadow-sm">
+          <div class="card-header">
+            <h2 id="titulo-contas" class="h5 mb-0">Contas de investimento</h2>
+          </div>
+          <form id="form-conta" class="card-body" novalidate>
+            <div class="mb-3">
+              <label for="conta-investidor" class="form-label">Investidor</label>
+              <!-- As opções vêm da lista de investidores, via JS -->
+              <select id="conta-investidor" name="investidorId" class="form-select" required>
+                <option value="">Selecione…</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label for="conta-saldo" class="form-label">Saldo (R$)</label>
+              <input id="conta-saldo" name="saldo" type="number" step="0.01" min="0" value="0" class="form-control" required>
+            </div>
+            <div class="d-flex gap-2">
+              <button id="conta-salvar" type="submit" class="btn btn-primary">Abrir conta</button>
+              <button id="conta-cancelar" type="button" class="btn btn-outline-secondary d-none">Cancelar</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="card shadow-sm">
+          <div class="card-body">
+            <!-- Os quatro estados da lista: só um aparece por vez -->
+            <div id="contas-carregando" class="text-center py-4">
+              <div class="spinner-border text-primary" aria-hidden="true"></div>
+              <p class="text-muted mt-2 mb-0">Carregando contas de investimento…</p>
+            </div>
+
+            <div id="contas-erro" class="alert alert-danger mb-0 d-none" role="alert">
+              <p id="contas-erro-msg" class="mb-2"></p>
+              <button id="contas-recarregar" type="button" class="btn btn-sm btn-outline-danger">Tentar de novo</button>
+            </div>
+
+            <p id="contas-vazio" class="text-muted text-center py-4 mb-0 d-none">
+              Nenhuma conta de investimento ainda. Cadastre um investidor e abra a primeira.
+            </p>
+
+            <div id="contas-sucesso" class="table-responsive d-none">
+              <table class="table table-hover align-middle mb-0">
+                <thead>
+                  <tr>
+                  <th scope="col">#</th>
+                  <th scope="col">Investidor</th>
+                  <th scope="col" class="text-end">Saldo</th>
+                  <th scope="col" class="text-end">Ações</th>
+                  </tr>
+                </thead>
+                <tbody id="contas-linhas"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="container text-muted small pb-4">
+    Programação Web · UEPB · 2026.2 · Semana 4
+  </footer>
+
+  <!-- type="module": habilita import/export e só roda depois de o HTML virar DOM -->
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
