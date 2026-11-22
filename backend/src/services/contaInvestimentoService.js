@@ -29,7 +29,7 @@ export const contaInvestimentoService = {
     if (!investidorModel.buscarPorId(Number(investidorId))) throw erro(422, 'Investidor informado não existe');
 
     // Regra: o investidor já possui conta
-    if (contaInvestimentoModel.listarPorCliente(Number(investidorId)).length > 0) {
+    if (contaInvestimentoModel.listarPorInvestidor(Number(investidorId)).length > 0) {
       throw erro(422, 'Investidor informado já possui conta');
     }
 

@@ -82,7 +82,7 @@ content-type: application/json
 POST {{apiUrl}}/contas
 content-type: application/json
 
-{"saldo": 1000, "investidorId": 1}
+{"saldo": 1000, "investidorId": 2}
 
 ### Buscar conta inexistente:
 
@@ -104,4 +104,4 @@ content-type: application/json
 
 ### Obter investidor com conta:
 
-GET {{apiUrl}}/investidores/1
+GET {{apiUrl}}/investidores/2

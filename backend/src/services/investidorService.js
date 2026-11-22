@@ -1,4 +1,5 @@
 import { investidorModel } from '../models/investidorModel.js';
+import { contaInvestimentoModel } from '../models/contaInvestimentoModel.js';
 import { erro } from '../utils/erro.js';
 
 export const investidorService = {
@@ -31,6 +32,11 @@ export const investidorService = {
   },
 
   remover(id) {
+    // Regra nova (S5): investidor com conta não pode ser removido
+    if (contaInvestimentoModel.listarPorInvestidor(id).length > 0) {
+      throw erro(409, 'Investidor possui conta. Remova a conta primeiro.');
+    }
+
     const removido = investidorModel.remover(id);
     if (!removido) throw erro(404, 'Investidor não encontrado');
   },

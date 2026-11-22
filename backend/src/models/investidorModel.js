@@ -1,36 +1,37 @@
-// "Banco de dados" em memória: um array. Na S5 vira SQLite.
-let investidores = [];
-let proximoId = 1;
+import { db } from '../db.js';
 
 export const investidorModel = {
   listar() {
-    return investidores;
+    return db.prepare('SELECT * FROM investidores ORDER BY id').all();
   },
 
   buscarPorId(id) {
-    return investidores.find((c) => c.id == id) ?? null;
+    return db.prepare('SELECT * FROM investidores WHERE id = ?').get(id) ?? null;
   },
 
   existeCpf(cpf) {
-    return investidores.some((c) => c.cpf === cpf);
+    const linha = db.prepare('SELECT 1 FROM investidores WHERE cpf = ?').get(cpf);
+    return linha !== undefined;
   },
 
   inserir({ nome, cpf, email, celular }) {
-    const novo = { id: proximoId++, nome, cpf, email, celular };
-    investidores.push(novo);
-    return novo;
+    const r = db
+      .prepare('INSERT INTO investidores (nome, cpf, email, celular) VALUES (?, ?, ?, ?)')
+      .run(nome, cpf, email, celular);
+    return this.buscarPorId(r.lastInsertRowid);
   },
 
   atualizar(id, dados) {
-    const i = investidores.findIndex((c) => c.id === id);
-    if (i === -1) return null;
-    investidores[i] = { ...investidores[i], ...dados, id }; // o id nunca muda
-    return investidores[i];
+    const atual = this.buscarPorId(id);
+    if (!atual) return null;
+    const novo = { ...atual, ...dados };
+    db.prepare('UPDATE investidores SET nome = ?, cpf = ?, email = ?, celular = ? WHERE id = ?')
+      .run(novo.nome, novo.cpf, novo.email ?? null, novo.celular ?? null, id); // o id nunca muda
+    return this.buscarPorId(id);
   },
 
   remover(id) {
-    const antes = investidores.length;
-    investidores = investidores.filter((c) => c.id !== id);
-    return investidores.length < antes; // true = removeu
+    const r = db.prepare('DELETE FROM investidores WHERE id = ?').run(id);
+    return r.changes > 0; // true = removeu
   },
-}
+};
